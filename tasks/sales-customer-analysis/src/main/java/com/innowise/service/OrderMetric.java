@@ -1,4 +1,9 @@
-package com;
+package com.innowise.service;
+
+import com.innowise.dto.Customer;
+import com.innowise.dto.Order;
+import com.innowise.dto.OrderItem;
+import com.innowise.dto.OrderStatus;
 
 import java.util.List;
 import java.util.Map;

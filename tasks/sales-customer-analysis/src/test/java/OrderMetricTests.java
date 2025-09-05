@@ -1,7 +1,8 @@
-import com.Customer;
-import com.OrderMetric;
+import com.innowise.dto.Customer;
+import com.innowise.service.OrderMetric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import util.OrderDataFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;

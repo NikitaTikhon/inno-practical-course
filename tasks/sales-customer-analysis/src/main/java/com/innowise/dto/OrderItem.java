@@ -1,4 +1,4 @@
-package com;
+package com.innowise.dto;
 
 import java.util.Objects;
 

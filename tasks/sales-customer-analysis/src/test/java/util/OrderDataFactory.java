@@ -1,4 +1,10 @@
-import com.*;
+package util;
+
+import com.innowise.dto.Category;
+import com.innowise.dto.Customer;
+import com.innowise.dto.Order;
+import com.innowise.dto.OrderItem;
+import com.innowise.dto.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,6 +13,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public final class OrderDataFactory {
+
+    private OrderDataFactory() {}
 
     public static List<Order> generateOrders() {
         List<Order> orders = new ArrayList<>();

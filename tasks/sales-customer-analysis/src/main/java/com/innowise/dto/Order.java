@@ -1,4 +1,4 @@
-package com;
+package com.innowise.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
