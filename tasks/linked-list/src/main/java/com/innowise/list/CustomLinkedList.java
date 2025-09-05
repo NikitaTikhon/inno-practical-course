@@ -263,6 +263,7 @@ public class CustomLinkedList<E> {
         prev.next = node.next;
         next.prev = node.prev;
 
+        size--;
         return node.item;
     }
 
