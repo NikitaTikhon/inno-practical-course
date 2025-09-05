@@ -99,8 +99,9 @@ public class CustomLinkedList<E> {
      * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index > size()})
      */
     public void add(int index, E el) {
-        if (index < 0 || index > size)
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index %d, Size: %d".formatted(index, size));
+        }
 
         if (size == index) {
             addLast(el);
@@ -128,8 +129,9 @@ public class CustomLinkedList<E> {
      * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >= size()})
      */
     public E get(int index) {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index %d, Size: %d".formatted(index, size));
+        }
 
         Node<E> node = node(index);
         return node.item;
@@ -170,8 +172,9 @@ public class CustomLinkedList<E> {
      */
     public E getFirst() {
         Node<E> first = this.first;
-        if (first == null)
+        if (first == null) {
             throw new NoSuchElementException();
+        }
 
         return first.item;
     }
@@ -184,8 +187,9 @@ public class CustomLinkedList<E> {
      */
     public E getLast() {
         Node<E> last = this.last;
-        if (last == null)
+        if (last == null) {
             throw new NoSuchElementException();
+        }
 
         return last.item;
     }
@@ -199,8 +203,9 @@ public class CustomLinkedList<E> {
     public E removeFirst() {
         Node<E> first = this.first;
 
-        if (first == null)
+        if (first == null) {
             throw new NoSuchElementException();
+        }
 
         Node<E> next = first.next;
         this.first = next;
@@ -223,8 +228,9 @@ public class CustomLinkedList<E> {
     public E removeLast() {
         Node<E> last = this.last;
 
-        if (last == null)
+        if (last == null) {
             throw new NoSuchElementException();
+        }
 
         Node<E> prev = last.prev;
         this.last = prev;
@@ -247,8 +253,9 @@ public class CustomLinkedList<E> {
      * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >= size()})
      */
     public E remove(int index) {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index %d, Size: %d".formatted(index, size));
+        }
 
         if (index == 0) {
             return removeFirst();
