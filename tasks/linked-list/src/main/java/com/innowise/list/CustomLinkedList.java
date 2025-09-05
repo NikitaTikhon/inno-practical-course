@@ -100,7 +100,7 @@ public class CustomLinkedList<E> {
      */
     public void add(int index, E el) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index %d, Size: %d".formatted(index, size));
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
         }
 
         if (size == index) {
@@ -130,7 +130,7 @@ public class CustomLinkedList<E> {
      */
     public E get(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index %d, Size: %d".formatted(index, size));
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
         }
 
         Node<E> node = node(index);
@@ -254,7 +254,7 @@ public class CustomLinkedList<E> {
      */
     public E remove(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index %d, Size: %d".formatted(index, size));
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
         }
 
         if (index == 0) {
@@ -272,6 +272,10 @@ public class CustomLinkedList<E> {
 
         size--;
         return node.item;
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index %d, Size: %d".formatted(index, size);
     }
 
 }
