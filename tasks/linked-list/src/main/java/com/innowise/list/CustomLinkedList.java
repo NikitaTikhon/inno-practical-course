@@ -1,4 +1,4 @@
-package com;
+package com.innowise.list;
 
 import java.util.NoSuchElementException;
 
