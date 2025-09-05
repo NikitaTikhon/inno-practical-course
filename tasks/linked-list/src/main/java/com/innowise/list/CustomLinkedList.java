@@ -145,7 +145,7 @@ public class CustomLinkedList<E> {
      */
     private Node<E> node(int index) {
         Node<E> node;
-        if (size / 2 > index) {
+        if (size / 2 >= index) {
             node = this.first;
 
             for (int i = 0; i < index; i++) {
