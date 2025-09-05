@@ -8,6 +8,7 @@ import com.innowise.dto.OrderStatus;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility class for calculating metrics and extracting information from a list of orders.
@@ -15,7 +16,8 @@ import java.util.stream.Collectors;
  */
 public final class OrderMetric {
 
-    private OrderMetric() {}
+    private OrderMetric() {
+    }
 
     /**
      * Returns a list of unique city names where orders were placed.
@@ -37,8 +39,7 @@ public final class OrderMetric {
      * @return Total income as a double
      */
     public static double calculateTotalIncomeCompletedOrders(List<Order> orders) {
-        return orders.stream()
-                .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
+        return getDeliveredOrders(orders)
                 .flatMap(order -> order.getItems().stream())
                 .mapToDouble(item -> item.getPrice() * item.getQuantity())
                 .sum();
@@ -52,8 +53,7 @@ public final class OrderMetric {
      * @throws RuntimeException if there are no delivered orders
      */
     public static String getMostPopularProduct(List<Order> orders) {
-        return orders.stream()
-                .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
+        return getDeliveredOrders(orders)
                 .flatMap(order -> order.getItems().stream())
                 .collect(Collectors.toMap(OrderItem::getProductName, OrderItem::getQuantity, Integer::sum))
                 .entrySet()
@@ -71,8 +71,7 @@ public final class OrderMetric {
      * @return Average check as a double; returns 0.0 if there are no delivered orders
      */
     public static double calculateAverageCheckDeliveredOrders(List<Order> orders) {
-        return orders.stream()
-                .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
+        return getDeliveredOrders(orders)
                 .mapToDouble(order -> order.getItems().stream()
                         .mapToDouble(item -> item.getPrice() * item.getQuantity())
                         .sum())
@@ -94,6 +93,11 @@ public final class OrderMetric {
                 .filter(entry -> entry.getValue() > 5)
                 .map(Map.Entry::getKey)
                 .toList();
+    }
+
+    private static Stream<Order> getDeliveredOrders(List<Order> orders) {
+        return orders.stream()
+                .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED));
     }
 
 }
