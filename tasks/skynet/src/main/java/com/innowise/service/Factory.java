@@ -46,11 +46,8 @@ public class Factory implements Runnable {
     public void run() {
         for (int day = 1; day <= simulationDays; day++) {
             try {
-                produce(day);
-
-                barrier.await();
-
-                barrier.await();
+                startDayPhase(day);
+                startNightPhase();
             } catch (InterruptedException | BrokenBarrierException e) {
                 Thread.currentThread().interrupt();
                 LOGGER.error("Factory thread was interrupted.");
@@ -59,26 +56,48 @@ public class Factory implements Runnable {
     }
 
     /**
+     * Represents the "Day" phase of the simulation, where the factory produces parts.
+     * The factory produces parts and then waits on the barrier for the factions to start collecting.
+     *
+     * @param day The current day of the simulation.
+     * @throws InterruptedException   if the current thread is interrupted while waiting.
+     * @throws BrokenBarrierException if the barrier is in a broken state.
+     */
+    private void startDayPhase(int day) throws InterruptedException, BrokenBarrierException {
+        produceParts(day);
+        barrier.await();
+    }
+
+    /**
+     * Represents the "Night" phase for the factory.
+     * The factory waits for the factions to finish collecting all parts before proceeding.
+     *
+     * @throws InterruptedException   if the current thread is interrupted while waiting.
+     * @throws BrokenBarrierException if the barrier is in a broken state.
+     */
+    private void startNightPhase() throws InterruptedException, BrokenBarrierException {
+        barrier.await();
+    }
+
+    /**
      * Produces a random number of random parts (between 1 and 10).
      *
      * @param day The current simulation day, used for logging.
      */
-    private void produce(int day) {
-        List<RobotPart> producedToday = new ArrayList<>();
+    private void produceParts(int day) {
         int partsToProduce = random.nextInt(10) + 1;
         RobotPart[] allRobotParts = RobotPart.getRobotParts();
 
         for (int i = 0; i < partsToProduce; i++) {
             RobotPart newPart = allRobotParts[random.nextInt(allRobotParts.length)];
             storage.add(newPart);
-            producedToday.add(newPart);
         }
 
-        String report = producedToday.stream()
+        String report = storage.stream()
                 .map(Enum::name)
                 .collect(Collectors.joining(", "));
-        LOGGER.info("--- Day {} ---\n[FACTORY]: Produced {} parts: [{}]. In storage: {}\n",
-                day, partsToProduce, report, storage.size());
+        LOGGER.info("--- Day {} ---\n[FACTORY]: Produced {} parts: [{}]\n",
+                day, partsToProduce, report);
     }
 
     /**
@@ -92,12 +111,12 @@ public class Factory implements Runnable {
         List<RobotPart> takenParts = new ArrayList<>();
 
         for (int i = 0; i < maxAmount; i++) {
-                RobotPart part = takePart();
-                if (part != null) {
-                    takenParts.add(part);
-                } else {
-                    break;
-                }
+            RobotPart part = takePart();
+            if (part != null) {
+                takenParts.add(part);
+            } else {
+                break;
+            }
         }
         return takenParts;
     }

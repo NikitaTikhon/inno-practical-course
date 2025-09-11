@@ -52,16 +52,36 @@ public class Faction implements Runnable {
     public void run() {
         for (int day = 1; day <= simulationDays; day++) {
             try {
-                barrier.await();
-
-                collectParts();
-
-                barrier.await();
+                startDayPhase();
+                startNightPhase();
             } catch (InterruptedException | BrokenBarrierException e) {
                 Thread.currentThread().interrupt();
                 LOGGER.error("Faction thread %s was interrupted.\n {}", name);
             }
         }
+    }
+
+    /**
+     * Represents the "Day" phase for the faction.
+     * The faction waits on the barrier for the factory to finish producing parts.
+     *
+     * @throws InterruptedException if the current thread is interrupted while waiting.
+     * @throws BrokenBarrierException if the barrier is in a broken state.
+     */
+    private void startDayPhase() throws InterruptedException, BrokenBarrierException {
+        barrier.await();
+    }
+
+    /**
+     * Represents the "Night" phase for the faction.
+     * The faction collects parts and then waits for other factions to finish.
+     *
+     * @throws InterruptedException if the current thread is interrupted while waiting.
+     * @throws BrokenBarrierException if the barrier is in a broken state.
+     */
+    private void startNightPhase() throws InterruptedException, BrokenBarrierException {
+        collectParts();
+        barrier.await();
     }
 
     /**
