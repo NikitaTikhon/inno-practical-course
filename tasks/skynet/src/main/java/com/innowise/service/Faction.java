@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.stream.Collectors;
@@ -22,9 +21,9 @@ public class Faction implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger(Faction.class.getName());
     private final String name;
     private final Factory factory;
-    private final Random random = new Random();
     private final CyclicBarrier barrier;
     private final int simulationDays;
+    private static final int MAX_PARTS_PER_DAY = 5;
 
     /**
      * Storage for counting collected parts of each type.
@@ -66,11 +65,10 @@ public class Faction implements Runnable {
     }
 
     /**
-     * Takes a random number of parts (between 1 and 5) from the factory.
+     * Takes parts from the factory.
      */
     private void collectParts() {
-        int partsToTake = random.nextInt(5) + 1;
-        List<RobotPart> taken = factory.takeParts(partsToTake);
+        List<RobotPart> taken = factory.takeParts(MAX_PARTS_PER_DAY);
 
         if (taken.isEmpty()) {
             LOGGER.info("[{}]: Wanted to take parts, but the storage is empty!\n", name);
