@@ -24,6 +24,10 @@ public class RobotWarSimulator {
      * The startSimulation entry point for the simulation.
      */
     public static void startSimulation() {
+        if (SIMULATION_DAYS != 100) {
+            throw new IllegalArgumentException("The simulation must run for exactly 100 days.");
+        }
+
         LOGGER.info("Simulation starting! Duration: " + SIMULATION_DAYS + " days.");
 
         CyclicBarrier barrier = new CyclicBarrier(PARTICIPANTS);
