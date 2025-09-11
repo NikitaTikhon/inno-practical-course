@@ -29,6 +29,7 @@ public class Factory implements Runnable {
     private final Random random = new Random();
     private final CyclicBarrier barrier;
     private final int simulationDays;
+    private final Object lock = new Object();
 
     /**
      * Constructs a new Factory.
@@ -91,14 +92,20 @@ public class Factory implements Runnable {
         List<RobotPart> takenParts = new ArrayList<>();
 
         for (int i = 0; i < maxAmount; i++) {
-            RobotPart part = storage.pollLast();
-            if (part != null) {
-                takenParts.add(part);
-            } else {
-                break;
-            }
+                RobotPart part = takePart();
+                if (part != null) {
+                    takenParts.add(part);
+                } else {
+                    break;
+                }
         }
         return takenParts;
+    }
+
+    private RobotPart takePart() {
+        synchronized (lock) {
+            return storage.pollLast();
+        }
     }
 
     public BlockingDeque<RobotPart> getStorage() {
