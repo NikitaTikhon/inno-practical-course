@@ -5,10 +5,10 @@ import com.innowise.model.RobotPart;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CyclicBarrier;
 import java.util.stream.Collectors;
 
@@ -28,7 +28,7 @@ public class Faction implements Runnable {
     /**
      * Storage for counting collected parts of each type.
      */
-    private final Map<RobotPart, Integer> collectedParts = new EnumMap<>(RobotPart.class);
+    private final Map<RobotPart, Integer> collectedParts = new ConcurrentHashMap<>();
 
     /**
      * Constructs a new Faction.
